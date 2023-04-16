@@ -6,7 +6,7 @@ const cors = require("cors");
 const scraper = require("./pageScraper");
 const linksGrabber = require("./linksGrabber");
 
-app.use(cors());
+app.use('*', cors());
 app.use(express.json());
 
 app.post("/scrape", async (req, res) => {
