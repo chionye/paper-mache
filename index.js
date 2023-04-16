@@ -7,17 +7,9 @@ const scraper = require("./pageScraper");
 const linksGrabber = require("./linksGrabber");
 require("dotenv").config();
 
-app.use(cors({
-    origin: 'https://legendary-spork-azure.vercel.app',
-    crossorigin: true
-}));
+app.use(cors());
 
 app.use(express.json());
-
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
-});
 
 app.get("/", (req, res) => {
     res.send("test");
