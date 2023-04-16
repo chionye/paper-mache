@@ -17,7 +17,6 @@ app.get("/", (req, res) => {
 })
 
 app.post("/scrape", (req, res) => {
-  res.header("Access-Control-Allow-Origin", "true");
   const baseUrl = req.body.url;
   try {
     linksGrabber(baseUrl)
