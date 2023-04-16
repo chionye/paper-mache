@@ -21,13 +21,13 @@ app.post("/scrape", (req, res) => {
   const baseUrl = req.body.url;
   try {
     linksGrabber(baseUrl)
-    .then( responses => {
+    .then(responses => {
       let homePageLinks = [...responses];
-      scraper(homePageLinks).then(() =>
+//       scraper(homePageLinks).then(() => 
         res.send(
           "The result file is being generated, please find it in the server folder..."
         )
-      );
+//       );
     })
   } catch (e) {
     res.send(e);
