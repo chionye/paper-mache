@@ -3,6 +3,8 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const scraper = require("./pageScraper");
+const linksGrabber = require("./linksGrabber");
 require("dotenv").config();
 
 app.use(cors());
