@@ -16,10 +16,10 @@ app.get("/", (req, res) => {
     res.send("test");
 })
 
-app.post("/scrape", (req, res) => {
+app.post("/scrape", async (req, res) => {
   const baseUrl = req.body.url;
   try {
-    let homePageLinks = [...(linksGrabber(baseUrl))];
+    let homePageLinks = [...(await linksGrabber(baseUrl))];
     scraper(homePageLinks).then(() => {
       const file = `test.txt`;
       res.download(file);
