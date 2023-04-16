@@ -5,13 +5,14 @@ const app = express();
 const cors = require("cors");
 const scraper = require("./pageScraper");
 const linksGrabber = require("./linksGrabber");
+
+app.use(cors({
+    origin: ['https://paper-mache.herokuapp.com/', 'https://legendary-spork-azure.vercel.app']
+}));
+
 require("dotenv").config();
 
 app.use(express.json());
-
-app.use(cors({
-    origin: '*'
-}));
 
 app.get("/", (req, res) => {
     res.send("test");
