@@ -16,18 +16,19 @@ app.get("/", (req, res) => {
     res.send("test");
 })
 
-app.post("/scrape", async (req, res) => {
+app.post("/scrape", (req, res) => {
   res.header("Access-Control-Allow-Origin", "true");
   const baseUrl = req.body.url;
   try {
-    let homePageLinks = [...(await linksGrabber(baseUrl))];
-    scraper(homePageLinks).then(() => {
-      const file = `test.txt`;
-      res.download(file);
-      res.send(
-        "The result file is being generated, please find it in the server folder..."
-      )
-      });
+    linksGrabber(baseUrl)
+    .then( responses => {
+      let homePageLinks = [...responses];
+      scraper(homePageLinks).then(() =>
+        res.send(
+          "The result file is being generated, please find it in the server folder..."
+        )
+      );
+    })
   } catch (e) {
     res.send(e);
   }
