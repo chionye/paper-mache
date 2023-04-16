@@ -7,13 +7,9 @@ const scraper = require("./pageScraper");
 const linksGrabber = require("./linksGrabber");
 
 
-const corsOptions = {
-    origin: 'https://legendary-spork-azure.vercel.app/',
-    optionsSuccessStatus: 200,
-    credentials: true
-}
-
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: '*'
+}));
 app.use(express.json());
 
 app.post("/scrape", async (req, res) => {
