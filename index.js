@@ -29,9 +29,9 @@ app.post("/scrape", (req, res) => {
 //         res.send(content);
 //       });
 //     });
-  } catch (e) {
-    res.send(e);
-  }
+//   } catch (e) {
+//     res.send(e);
+//   }
 });
 
 app.listen(process.env.PORT || 5000);
