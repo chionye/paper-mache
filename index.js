@@ -13,11 +13,13 @@ app.post("/scrape", async (req, res) => {
   const baseUrl = req.body.url;
   try {
     let homePageLinks = [...(await linksGrabber(baseUrl))];
-    scraper(homePageLinks).then(() =>
+    scraper(homePageLinks).then(() => {
+      const file = `test.txt`;
+      res.download(file);
       res.send(
         "The result file is being generated, please find it in the server folder..."
       )
-    );
+      });
   } catch (e) {
     res.send(e);
   }
