@@ -5,6 +5,7 @@ const app = express();
 const cors = require("cors");
 const scraper = require("./pageScraper");
 const linksGrabber = require("./linksGrabber");
+require("dotenv").config();
 
 app.use(express.json());
 
@@ -32,4 +33,4 @@ app.post("/scrape", async (req, res) => {
   }
 });
 
-app.listen(8080);
+app.listen(process.env.PORT || 5000);
