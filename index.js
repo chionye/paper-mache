@@ -8,8 +8,10 @@ const linksGrabber = require("./linksGrabber");
 
 
 app.use(cors({
-    origin: '*'
+    origin: true, 
+    credentials: true
 }));
+
 app.use(express.json());
 
 app.post("/scrape", async (req, res) => {
