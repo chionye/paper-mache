@@ -6,12 +6,15 @@ const cors = require("cors");
 const scraper = require("./pageScraper");
 const linksGrabber = require("./linksGrabber");
 
+app.use(express.json());
 
 app.use(cors({
     origin: '*'
 }));
 
-app.use(express.json());
+app.get("/", (req, res) => {
+    res.send("test");
+})
 
 app.post("/scrape", async (req, res) => {
   const baseUrl = req.body.url;
