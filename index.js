@@ -8,8 +8,7 @@ const linksGrabber = require("./linksGrabber");
 
 
 app.use(cors({
-    origin: true, 
-    credentials: true
+    origin: '*'
 }));
 
 app.use(express.json());
