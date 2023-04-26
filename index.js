@@ -4,22 +4,27 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const scraper = require("./pageScraper");
-const linksGrabber = require("./linksGrabber");
+const { linksGrabber } = require("./linksGrabber");
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.post("/scrape", async (req, res) => {
   const baseUrl = req.body.url;
+  let domain = new URL(baseUrl);
+  let name = `${domain.hostname}`;
   try {
-    let homePageLinks = [...(await linksGrabber(baseUrl))];
-    scraper(homePageLinks).then(() => {
-      const file = `test.txt`;
-      res.download(file);
-      res.send(
-        "The result file is being generated, please find it in the server folder..."
-      )
-      });
+    linksGrabber(50, baseUrl)
+      .then(async (e) => {
+        const re = await scraper(e, { baseUrl, name });
+        if (re) {
+          res.send(
+            "File has been generated successfully, please find it in the project directory."
+          );
+        }
+      })
+      .catch(console.error);
   } catch (e) {
     res.send(e);
   }

@@ -1,32 +1,42 @@
 /** @format */
-const axios = require("axios");
-var cheerio = require("cheerio");
 
-async function linksGrabber(url) {
-  try {
-    let links = new Set();
-    let httpResponse = await axios.get(url);
-    let $ = cheerio.load(httpResponse.data);
-    let linkObjects = $("a"); // get all hyperlinks
-    let domain = new URL(url);
-    let name = `${domain.protocol}://${domain.hostname}`;
-    let fullLink;
-    linkObjects.each((index, element) => {
-      // get the href attribute
-      let lnk = $(element).attr("href");
-      if (lnk.indexOf(name) == -1 && lnk.indexOf("http") == -1) {
-        fullLink = lnk.startsWith("/")
-          ? `${name}${lnk}`.replace("::", ":")
-          : `${name}/${lnk}`.replace("::", ":");
-      } else {
-        fullLink = `${lnk}`;
+const puppeteer = require("puppeteer");
+
+function run(pagesToScrape, url) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!pagesToScrape) {
+        pagesToScrape = 1;
       }
-      links.add(fullLink);
-    });
-    return links;
-  } catch (e) {
-    console.log(e);
-  }
+      const browser = await puppeteer.launch();
+      const page = await browser.newPage();
+      await page.goto(url);
+      let currentPage = 1;
+      let urls = [];
+      while (currentPage <= pagesToScrape) {
+        let newUrls = await page.evaluate(() => {
+          let results = [];
+          let items = document.querySelectorAll("a");
+          items.forEach((item) => {
+            results.push(item.getAttribute("href"));
+          });
+          return results;
+        });
+        urls = urls.concat(newUrls);
+        if (currentPage < pagesToScrape) {
+          await Promise.all([
+            await page.click("a"),
+            await page.waitForSelector("a"),
+          ]);
+        }
+        currentPage++;
+      }
+      browser.close();
+      return resolve([...new Set(urls)]);
+    } catch (e) {
+      return reject(e);
+    }
+  });
 }
 
-module.exports = linksGrabber;
+exports.linksGrabber = run;
