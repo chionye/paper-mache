@@ -3,7 +3,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const scraper = require("./pageScraper");
+const scraper = require("./pageScraper1");
 const { linksGrabber } = require("./linksGrabber");
 
 app.use(cors());
