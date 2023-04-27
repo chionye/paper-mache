@@ -7,7 +7,7 @@ const pageScraper = async (url, link) => {
   const { baseUrl, name } = link;
   const cluster = await Cluster.launch({
     concurrency: Cluster.CONCURRENCY_CONTEXT,
-    maxConcurrency: 5,
+    maxConcurrency: 10,
     monitor: true,
     timeout: 500000,
   });

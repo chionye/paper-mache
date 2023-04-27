@@ -3,7 +3,8 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const scraper = require("./pageScraper1");
+const scraper = require("./pageScraper");
+const sanitize = require("./sanitizer");
 const { linksGrabber } = require("./linksGrabber");
 
 app.use(cors());
@@ -18,10 +19,13 @@ app.post("/scrape", async (req, res) => {
     linksGrabber(50, baseUrl)
       .then(async (e) => {
         const re = await scraper(e, { baseUrl, name });
+        console.log(re)
         if (re) {
-          res.send(
-            "File has been generated successfully, please find it in the project directory."
-          );
+          if (sanitize(`${name}.txt`)){
+            res.send(
+              "File has been generated successfully, please find it in the project directory."
+            );
+          }
         }
       })
       .catch(console.error);
